@@ -1,0 +1,58 @@
+services:
+  zoo:
+    image: confluentinc/cp-zookeeper:7.7.1
+    container_name: zoo
+    restart: always
+    hostname: zoo
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  pg-master:
+    build: .
+    image: my-postgres-patroni
+    container_name: pg-master
+    hostname: pg-master
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PATRONI_NAME: postgresql0
+    ports:
+      - "5433:5432"
+      - "8008:8008"
+    command: patroni /postgres0.yml
+    depends_on:
+      - zoo
+
+  pg-slave:
+    build: .
+    image: my-postgres-patroni
+    container_name: pg-slave
+    hostname: pg-slave
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PATRONI_NAME: postgresql1
+    ports:
+      - "5434:5432"
+      - "8009:8008"
+    command: patroni /postgres1.yml
+    depends_on:
+      - zoo
+      - pg-master
+
+  haproxy:
+    image: haproxy:2.4
+    container_name: haproxy
+    ports:
+      - "5000:5432"
+      - "7000:7000"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - pg-master
+      - pg-slave
