@@ -36,10 +36,6 @@ X-Lab-Author: Идентификация студента.
 X-Powered-By: Указание стека технологий.
 ### 3.2. Деплой сайта
 Плейбук автоматически создает корневую директорию сайта /var/www/my_site и копирует туда кастомную страницу index.html.
-Запуск основного сценария:
-code
-Bash
-ansible-playbook -i hosts site.yml --ask-become-pass
 
 ![Alt text](images/lab5.png)
 
