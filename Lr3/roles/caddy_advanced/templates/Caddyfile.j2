@@ -1,0 +1,8 @@
+:8888 {
+    root * {{ site_root }}
+    file_server
+    header {
+        {{ custom_header }}
+        X-Powered-By "Ansible & Caddy"
+    }
+}

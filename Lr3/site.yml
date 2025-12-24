@@ -1,0 +1,6 @@
+---
+- name: Deploy Advanced Caddy Server
+  hosts: webservers
+  become: yes # Нужно для установки пакетов
+  roles:
+    - caddy_advanced

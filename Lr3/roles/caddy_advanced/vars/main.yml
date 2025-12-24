@@ -1,0 +1,4 @@
+---
+domain_name: "localhost" # Или твой домен duckdns
+custom_header: "X-Lab-Author: Student-Name"
+site_root: "/var/www/my_site"

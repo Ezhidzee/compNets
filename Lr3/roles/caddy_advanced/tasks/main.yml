@@ -1,0 +1,29 @@
+---
+- name: Install Caddy (Ubuntu/Debian)
+  apt:
+    name: caddy
+    state: present
+    update_cache: yes
+
+- name: Create site root directory
+  file:
+    path: "{{ site_root }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy custom index.html
+  copy:
+    src: index.html
+    dest: "{{ site_root }}/index.html"
+
+- name: Deploy Caddyfile from template
+  template:
+    src: Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+  notify: Reload Caddy
+
+- name: Ensure Caddy is started
+  service:
+    name: caddy
+    state: started
+    enabled: yes
