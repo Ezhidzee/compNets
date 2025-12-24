@@ -29,7 +29,7 @@ services:
     image: grafana/promtail:2.9.0
     container_name: promtail
     volumes:
-      - nc-data:/opt/nc_data # Монтируем ту же папку, где лежат логи Nextcloud
+      - nc-data:/opt/nc_data
       - ./promtail_config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
 
