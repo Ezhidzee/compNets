@@ -1,0 +1,27 @@
+---
+- name: Lab 2 - Task 1 - File Operations
+  hosts: webservers
+  tasks:
+    - name: 1. Create a temporary file
+      copy:
+        dest: "~/lab2_test.txt"
+        content: "Initial content: Hello from Step 1\n"
+
+    - name: 2. Modify file content (Add new info)
+      lineinfile:
+        path: "~/lab2_test.txt"
+        line: "Modified content: Task 1 completed by [Твое Имя]"
+        insertafter: EOF
+
+    - name: 3. Verify file content
+      command: cat ~/lab2_test.txt
+      register: file_output
+
+    - name: Show file content in console
+      debug:
+        var: file_output.stdout_lines
+
+    - name: 4. Remove the file
+      file:
+        path: "~/lab2_test.txt"
+        state: absent
